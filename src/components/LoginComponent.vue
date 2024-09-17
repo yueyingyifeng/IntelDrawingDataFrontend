@@ -1,5 +1,6 @@
 <template>
-
+	<main v-show="show">
+		
 	<el-text class="mx-1" size="large">Login</el-text>
 
 
@@ -21,11 +22,14 @@
 		</el-form-item>
 
 	</el-form>
+	</main>
 </template>
 
 <script setup>
 import {
-	reactive, defineEmits,
+	reactive,
+	defineEmits,
+	defineProps,
 	getCurrentInstance
 }
 	from 'vue'
@@ -39,6 +43,13 @@ const formData = reactive({
 
 const emit = defineEmits(['toRegister'])
 
+const props = defineProps({
+	show: {
+		type: Boolean,
+		default: true
+	}
+});
+
 let { proxy } = getCurrentInstance()
 
 const login = () => {
@@ -47,13 +58,13 @@ const login = () => {
 	if (isValidEmail(formData.id)) {
 		loginParams['email'] = formData.id
 		loginParams['psw'] = formData.psw
-		
+
 	}
-	else if(Number(formData.id)){
+	else if (Number(formData.id)) {
 		loginParams['id'] = formData.id
 		loginParams['psw'] = formData.psw
 	}
-	else{
+	else {
 		ElMessage.error('Please enter a valid ID or Email')
 		return
 	}
@@ -65,11 +76,11 @@ const login = () => {
 		data: loginParams
 	}).then((res) => {
 		console.log(res.data)
-		if(res.status == 200){
-			
+		if (res.status == 200) {
+
 			router.push('/home')
 		}
-		
+
 	})
 		.catch((err) => {
 			if (err.status === 400) {
@@ -80,7 +91,7 @@ const login = () => {
 				ElMessage.error('Network error.')
 			}
 			console.log(err)
-			
+
 		})
 }
 

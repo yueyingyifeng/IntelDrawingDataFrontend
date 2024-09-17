@@ -1,5 +1,6 @@
 <template>
-
+	<main v-show="show">
+		
 	<el-text class="mx-1" size="large">Register</el-text>
 
 
@@ -29,10 +30,11 @@
 		</el-form-item>
 
 	</el-form>
+	</main>
 </template>
 
 <script setup>
-import { reactive, defineEmits } from 'vue'
+import { reactive, defineEmits, defineProps } from 'vue'
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
 import router from '../router/index'
@@ -45,13 +47,20 @@ const formData = reactive({
 
 const emit = defineEmits(['toLogin'])
 
+const props = defineProps({
+	show: {
+		type: Boolean,
+		default: true
+	}
+})
+
 
 function validatePSW() {
 	if (formData.psw !== formData.c_psw) {
 		ElMessage.error('Passwords do not match')
 		return false
 	}
-	if(formData.psw.length < 8 || formData.c_psw.length < 8){
+	if (formData.psw.length < 8 || formData.c_psw.length < 8) {
 		ElMessage.error('Password must be at least 8 characters long')
 		return false
 	}
@@ -69,16 +78,16 @@ function fieldsExist() {
 	return !(formData.name === '' || formData.psw === '' || formData.email === '' || formData.c_psw === '')
 }
 
-function valid(){
+function valid() {
 	if (!validatePSW())
 		return false
 
-	if(!fieldsExist()){
+	if (!fieldsExist()) {
 		ElMessage.error('Please fill in all fields')
 		return false
 	}
 
-	if(!isValidEmail(formData.email)){
+	if (!isValidEmail(formData.email)) {
 		ElMessage.error('Invalid email format')
 		return false
 	}
@@ -99,7 +108,7 @@ const Register = () => {
 			"Email": formData.email,
 		}
 	}).then(response => {
-		if(response.status == 201){
+		if (response.status == 201) {
 			router.push('/home')
 		}
 	}).catch(err => {
