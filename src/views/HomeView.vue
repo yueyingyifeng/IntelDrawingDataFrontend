@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import HeaderComponent from '@/components/HomeComponents/HeaderComponent.vue'
 import AsideComponent from '@/components/HomeComponents/AsideComponent.vue';
 import HomeComponent from '@/components/HomeComponents/HomeComponent.vue';
+import Home_CreateTableComponent from '@/components/HomeComponents/Home_CreateTableComponent.vue';
 
 
 let currentData = ref([]);
@@ -25,7 +26,8 @@ function switchData(data) {
         </el-aside>
 
         <el-main>
-          <HomeComponent :data="currentData"/>
+          <!-- <HomeComponent :data="currentData"/> -->
+          <Home_CreateTableComponent/>
         </el-main>
         
       </el-container>

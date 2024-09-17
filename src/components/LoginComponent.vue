@@ -44,13 +44,18 @@ let { proxy } = getCurrentInstance()
 const login = () => {
 	let loginParams = {}
 
-	if (!isValidEmail(formData.id)) {
+	if (isValidEmail(formData.id)) {
+		loginParams['email'] = formData.id
+		loginParams['psw'] = formData.psw
+		
+	}
+	else if(Number(formData.id)){
 		loginParams['id'] = formData.id
 		loginParams['psw'] = formData.psw
 	}
-	else {
-		loginParams['email'] = formData.id
-		loginParams['psw'] = formData.psw
+	else{
+		ElMessage.error('Please enter a valid ID or Email')
+		return
 	}
 
 	// 调用 axios 出了问题，只能用这种方法访问，具体查看 main.js
@@ -59,8 +64,12 @@ const login = () => {
 		url: 'https://localhost:7161/api/Login',
 		data: loginParams
 	}).then((res) => {
-		if(res.status == 200)
-		router.push('/home')
+		console.log(res.data)
+		if(res.status == 200){
+			
+			router.push('/home')
+		}
+		
 	})
 		.catch((err) => {
 			if (err.status === 400) {
@@ -70,6 +79,8 @@ const login = () => {
 			else {
 				ElMessage.error('Network error.')
 			}
+			console.log(err)
+			
 		})
 }
 

@@ -1,7 +1,12 @@
 <script setup>
 import router from '../../router/index'
+import { defineEmits } from 'vue';
+
+const emits = defineEmits(['toCreateTable'])
+
+
 function toDataTable(){
-    //TODO: 创建数据表逻辑，这里还需要一个页面来创建数据表
+    emits('toCreateTable')
 }
 
 function logout(){

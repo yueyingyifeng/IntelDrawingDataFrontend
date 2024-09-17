@@ -59,7 +59,7 @@ function loadADataTable(project_id) {
     emit('data', fakeData[project_id - 1])
 }
 
-emits('data', fakeData[0])
+emit('data', fakeData[0])
 
 </script>
 

@@ -1,63 +1,120 @@
 <template>
 
-    <el-text class="mx-1" size="large">Register</el-text>
+	<el-text class="mx-1" size="large">Register</el-text>
 
-    
 
-    <el-form
-      style="max-width: 600px"
-      label-width="150px"
-    >
 
-    <hr />
-      <el-form-item label="Name">
-        <el-input v-model="formData.name" type="text" autocomplete="off" :clearable="true"/>
-      </el-form-item>
+	<el-form style="max-width: 600px" label-width="150px">
 
-      <el-form-item label="Password">
-        <el-input
-          v-model="formData.psw"
-          type="password"
-          autocomplete="off"
-          :clearable="true"
-        />
-      </el-form-item>
+		<hr />
+		<el-form-item label="Name">
+			<el-input v-model="formData.name" type="text" autocomplete="off" :clearable="true" />
+		</el-form-item>
 
-      <el-form-item label="Confirm Password">
-        <el-input
-          v-model="formData.c_psw"
-          type="password"
-          autocomplete="off"
-          :clearable="true"
-        />
-      </el-form-item>
+		<el-form-item label="Email">
+			<el-input v-model="formData.email" type="email" autocomplete="off" :clearable="true" />
+		</el-form-item>
 
-      <el-form-item>
-        <el-button @click="Register">Sign up</el-button>
-        <el-button type="primary" @click="switchToLogin">Already have an account? Sign in</el-button>
-      </el-form-item>
+		<el-form-item label="Password">
+			<el-input v-model="formData.psw" type="password" autocomplete="off" :clearable="true" />
+		</el-form-item>
 
-    </el-form>
-  </template>
-  
-  <script setup>
-  import { reactive, defineEmits } from 'vue'
-  
-  const formData = reactive({
-    name:'',
-    psw: '',
-    c_psw: '',
-  })
+		<el-form-item label="Confirm Password">
+			<el-input v-model="formData.c_psw" type="password" autocomplete="off" :clearable="true" />
+		</el-form-item>
 
-  const emit = defineEmits(['toLogin'])
+		<el-form-item>
+			<el-button @click="Register">Sign up</el-button>
+			<el-button type="primary" @click="switchToLogin">Already have an account? Sign in</el-button>
+		</el-form-item>
 
-  const Register = () => {
-    //TODO: 注册请求逻辑
-  }
+	</el-form>
+</template>
 
-  const switchToLogin = ()=>{
-    emit('toLogin')
-  }
+<script setup>
+import { reactive, defineEmits } from 'vue'
+import axios from 'axios';
+import { ElMessage } from 'element-plus'
+import router from '../router/index'
+const formData = reactive({
+	name: '',
+	psw: '',
+	email: '',
+	c_psw: '',
+})
 
-  </script>
-  
+const emit = defineEmits(['toLogin'])
+
+
+function validatePSW() {
+	if (formData.psw !== formData.c_psw) {
+		ElMessage.error('Passwords do not match')
+		return false
+	}
+	if(formData.psw.length < 8 || formData.c_psw.length < 8){
+		ElMessage.error('Password must be at least 8 characters long')
+		return false
+	}
+	return true
+}
+
+function isValidEmail(email) {
+	// 定义用于检测邮箱格式的正则表达式
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+}
+
+
+function fieldsExist() {
+	return !(formData.name === '' || formData.psw === '' || formData.email === '' || formData.c_psw === '')
+}
+
+function valid(){
+	if (!validatePSW())
+		return false
+
+	if(!fieldsExist()){
+		ElMessage.error('Please fill in all fields')
+		return false
+	}
+
+	if(!isValidEmail(formData.email)){
+		ElMessage.error('Invalid email format')
+		return false
+	}
+	return true
+}
+
+const Register = () => {
+
+	if (!valid())
+		return
+
+	axios({
+		method: 'post',
+		url: 'https://localhost:7161/api/Register',
+		data: {
+			"Name": formData.name,
+			"Psw": formData.psw,
+			"Email": formData.email,
+		}
+	}).then(response => {
+		if(response.status == 201){
+			router.push('/home')
+		}
+	}).catch(err => {
+		if (err.status === 400) {
+			console.log(err)
+			ElMessage.error(err.response.data)
+		}
+		else {
+			ElMessage.error('Network error.')
+		}
+	});
+}
+
+const switchToLogin = () => {
+	emit('toLogin')
+}
+
+</script>
