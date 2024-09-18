@@ -110,7 +110,7 @@ const Register = () => {
 		}
 	}).then(response => {
 		if (response.status == 201) {
-			store.storeUserData(res.data);
+			store.storeUserData(response.data);
 			router.push('/home')
 		}
 	}).catch(err => {
@@ -119,6 +119,7 @@ const Register = () => {
 			ElMessage.error(err.response.data)
 		}
 		else {
+			console.log(err)
 			ElMessage.error('Network error.')
 		}
 	});
