@@ -38,6 +38,7 @@ import { reactive, defineEmits, defineProps } from 'vue'
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
 import router from '../router/index'
+import { store } from '@/Util/Store';
 const formData = reactive({
 	name: '',
 	psw: '',
@@ -109,6 +110,7 @@ const Register = () => {
 		}
 	}).then(response => {
 		if (response.status == 201) {
+			store.storeUserData(res.data);
 			router.push('/home')
 		}
 	}).catch(err => {

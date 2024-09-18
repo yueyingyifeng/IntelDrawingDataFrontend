@@ -35,7 +35,7 @@ import {
 	from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '../router/index'
-
+import { store } from '@/Util/Store';
 const formData = reactive({
 	id: '',
 	psw: '',
@@ -75,9 +75,8 @@ const login = () => {
 		url: 'https://localhost:7161/api/Login',
 		data: loginParams
 	}).then((res) => {
-		console.log(res.data)
 		if (res.status == 200) {
-
+			store.storeUserData(res.data);
 			router.push('/home')
 		}
 
