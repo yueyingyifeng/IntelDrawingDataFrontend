@@ -26,7 +26,7 @@ function addCol() {
 function deleteCol() {
     for(let i = 0; i < count_add.value; i++)
         props.row.pop()
-    count_add.value = 1
+    count_add.value = 1 
 }
 
 
