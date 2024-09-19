@@ -1,6 +1,6 @@
 <script setup>
 import Chart from 'chart.js/auto'
-import { onMounted, defineProps, watch,ref } from 'vue';
+import { onMounted, defineProps, watch } from 'vue';
 
 let chart;
 
@@ -8,6 +8,10 @@ const props = defineProps({
     data: {
         type: Array,
         required: true
+    },
+    show: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -25,9 +29,10 @@ onMounted(() => {
 })
 
 function initChart() {
-    if (chart   ) {
+    if (chart) {
         chart.destroy();
     }
+
 
 
     chart = new Chart(
@@ -35,11 +40,15 @@ function initChart() {
         {
             type: 'bar',
             data: {
-                labels: props.data.map(row => row.year),
+                labels: ['a', 'b'],
                 datasets: [
                     {
-                        label: 'Acquisitions by year',
-                        data: props.data.map(row => row.count)
+                        label: 'a',
+                        data: [10, 20]
+                    },
+                    {
+                        label: 'b',
+                        data: [12, 13]
                     }
                 ]
             }
@@ -67,7 +76,7 @@ function removeData() {
 </script>
 
 <template>
-    <main class="test_home_background">
+    <main v-show="show" class="test_home_background">
         <canvas style="width: 700px;" id="acquisitions"></canvas>
     </main>
 </template>

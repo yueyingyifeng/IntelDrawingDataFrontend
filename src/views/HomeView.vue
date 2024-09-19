@@ -8,8 +8,20 @@ import Home_CreateTableComponent from '@/components/HomeComponents/Home_CreateTa
 
 let currentData = ref([]);
 
+const showData = ref(true);
+
 function switchData(data) {
   currentData.value = data;
+  showData.value = true;
+}
+
+function saveFile(data) {
+
+}
+
+function previewData(data) {
+  currentData.value = data;
+  showData.value = true;
 }
 </script>
 
@@ -17,7 +29,7 @@ function switchData(data) {
   <div >
     <el-container>
       <el-header>
-        <HeaderComponent />
+        <HeaderComponent @toCreateTable="showData = false"/>
       </el-header>
 
       <el-container>
@@ -26,8 +38,9 @@ function switchData(data) {
         </el-aside>
 
         <el-main>
-          <!-- <HomeComponent :data="currentData"/> -->
-          <Home_CreateTableComponent/>
+          <HomeComponent :data="currentData" :show="showData"/>
+
+          <Home_CreateTableComponent @saveFile="saveFile" @previewData="previewData" :show="!showData"/>
         </el-main>
         
       </el-container>
