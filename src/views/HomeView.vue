@@ -7,22 +7,16 @@ import Home_CreateTableComponent from '@/components/HomeComponents/Home_CreateTa
 
 
 let currentData = ref([]);
+let currentType = ref('');
 
 const showData = ref(true);
 
-function switchData(data) {
+function showChart(data,type) {
   currentData.value = data;
+  currentType.value = type;
   showData.value = true;
 }
 
-function saveFile(data) {
-
-}
-
-function previewData(data) {
-  currentData.value = data;
-  showData.value = true;
-}
 </script>
 
 <template>
@@ -34,13 +28,13 @@ function previewData(data) {
 
       <el-container>
         <el-aside width="15%">
-          <AsideComponent @data="switchData"/>
+          <AsideComponent @data="showChart"/>
         </el-aside>
 
         <el-main>
-          <HomeComponent :data="currentData" :show="showData"/>
+          <HomeComponent :data="currentData" :type="currentType" :show="showData"/>
 
-          <Home_CreateTableComponent @saveFile="saveFile" @previewData="previewData" :show="!showData"/>
+          <Home_CreateTableComponent @saveFile="showChart" @previewData="showChart" :show="!showData"/>
         </el-main>
         
       </el-container>

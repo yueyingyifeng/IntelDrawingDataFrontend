@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import axios from 'axios';
 import ArowConponent from '../CreateTableComponents/ArowConponent.vue';
 import {store} from '@/Util/Store.js'
+
 const tableData = ref([[]]);
 const count_add = ref(1)
 const saveDialog = ref(false)
@@ -13,10 +14,8 @@ const ChartTypes = [
   { value: 'bar', label: 'Bar Chart' },
   { value: 'line', label: 'Line Chart' },
   { value: 'pie', label: 'Pie Chart' },
-  { value: 'radar', label: 'Radar Chart' },
-  { value: 'polar', label: 'Polar Chart' },
   { value: 'doughnut', label: 'Doughnut Chart' },
-  { value: 'bubble', label: 'Bubble Chart' },
+  { value: 'polarArea', label: 'polarArea Chart' },
 ]
 const selectedType = ref(ChartTypes[0].value)
 
@@ -79,7 +78,7 @@ function showSaveFileDialog() {
 }
 
 function previewData() {
-  emit('previewData', tableData.value);
+  emit('previewData', tableData.value, selectedType.value);
 }
 
 function saveFile() {
@@ -101,7 +100,7 @@ function saveFile() {
         'Authorization': `Bearer ${store.getUserData().token}`
     },
     data: {
-        'fileName': file_name.value,
+        'fileName': file_name.value + "_" + selectedType.value,
         'data': tableData.value
     }
   }).then(res => {

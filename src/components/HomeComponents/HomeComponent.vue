@@ -9,6 +9,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
+    type: {
+        type: String,
+        default: 'bar'
+    },
     show: {
         type: Boolean,
         default: true
@@ -23,62 +27,79 @@ watch(
     }
 )
 
+watch(() => props.type,
+    (newVal, oldVal) => {
+        initChart()
+    }
+)
 
 onMounted(() => {
     initChart();
 })
+
+
+function formatData(data) {
+    return {
+        labels: data[0].slice(1),
+        datasets: data.slice(1).map(row => ({
+            label: row[0],
+            data: row.slice(1)
+        }))
+    }
+}
 
 function initChart() {
     if (chart) {
         chart.destroy();
     }
 
+    if (props.data.length < 1 || props.type === '')
+        return;
+    console.log(props.type);
+    console.log(props.data);
 
 
     chart = new Chart(
-        document.getElementById('acquisitions'),
+        document.getElementById('ctx'),
         {
-            type: 'bar',
-            data: {
-                labels: ['a', 'b'],
-                datasets: [
-                    {
-                        label: 'a',
-                        data: [10, 20]
-                    },
-                    {
-                        label: 'b',
-                        data: [12, 13]
-                    }
-                ]
-            }
+            type: props.type,
+            data: formatData(props.data)
         }
     );
 }
 
-function addData(newData) {
-    // chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(newData);
-    });
-    chart.update();
-}
 
-function removeData() {
-    chart.data.labels.pop();
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
-    });
-    chart.update();
-}
 
 
 </script>
 
 <template>
-    <main v-show="show" class="test_home_background">
-        <canvas style="width: 700px;" id="acquisitions"></canvas>
+    <main v-show="show" >
+        <canvas style="width: auto;" class="ctx" id="ctx"></canvas>
     </main>
 </template>
 
-<style></style>
+<style>
+.ctx{
+    width: auto;
+    height: 1px;
+}
+</style>
+
+
+<!-- {
+    "type": 'bar',// line、pie、doughnut、polarArea 的结构也是这样， radar、scatter 不能这样
+    "data": {
+        labels: ['a', 'b'],     // 第一行 表头 
+        datasets: [
+            {
+                label: 'c',     // 第二行 第一列
+                data: [10, 20]  // 第二行余下
+            },
+            {
+                label: 'd',     // 第三行 第一列
+                data: [12, 13]  // 第三行余下
+            }
+        ]
+    }
+} -->
