@@ -38,7 +38,8 @@ import { reactive, defineEmits, defineProps } from 'vue'
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
 import router from '../router/index'
-import { store } from '@/Util/Store';
+import { store, API } from '@/Util/Store';
+
 const formData = reactive({
 	name: '',
 	psw: '',
@@ -102,7 +103,7 @@ const Register = () => {
 
 	axios({
 		method: 'post',
-		url: 'https://localhost:7161/api/Register',
+		url: API.Register,
 		data: {
 			"Name": formData.name,
 			"Psw": formData.psw,
