@@ -29,7 +29,7 @@ function toLoad(){
             <el-col :span="8">{{project_name}}</el-col>
             <el-col :span="8">{{project_date}}</el-col>
             <el-col :span="8">
-                <el-button type="primary" @click="toLoad">Load</el-button>
+                <el-button class='btn' type="primary" @click="toLoad">Load</el-button>
             </el-col>
 
         </el-row>
@@ -41,5 +41,14 @@ function toLoad(){
 .test_aside_item{
     padding-bottom: 5%;
     padding-top: 5%;
+}
+.el-row{
+    color: white;
+}
+.btn{
+    margin-top: 10px;
+    margin-left: 10px;
+    background-color: #d6cfcf;
+    border-radius: 5px; 
 }
 </style>
