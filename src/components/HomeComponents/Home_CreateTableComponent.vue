@@ -3,7 +3,7 @@ import { ref, watch, defineEmits, defineProps } from 'vue';
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
 import ArowConponent from '../CreateTableComponents/ArowConponent.vue';
-import {store} from '@/Util/Store.js'
+import {store, API} from '@/Util/Store.js'
 
 const tableData = ref([[]]);
 const count_add = ref(1)
@@ -22,6 +22,7 @@ const selectedType = ref(ChartTypes[0].value)
 
 const emit = defineEmits(['saveFile', 'previewData']);
 
+console.log(API.Register);
 
 const props = defineProps({
   show:{
@@ -94,7 +95,7 @@ function saveFile() {
 
   axios({
     method: 'post',
-    url: 'https://localhost:7161/api/CreateTable',
+    url: API.CreateTable,
     headers: {
         'Authorization': `Bearer ${store.getUserData().token}`
     },

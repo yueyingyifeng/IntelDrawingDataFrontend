@@ -26,3 +26,14 @@ export const store = reactive({
         return this._TableData
     }
 })
+
+export const API = reactive(() => {
+    const API_ROOT = "https://localhost:7161/api/";
+
+    return {
+        API_ROOT,
+        Login:       API_ROOT + "Login",
+        Register:    API_ROOT + "Register",
+        CreateTable: API_ROOT + "CreateTable",
+    };
+})();
