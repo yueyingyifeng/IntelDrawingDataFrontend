@@ -92,7 +92,6 @@ function saveFile() {
 
   tableData.value = fillArray(tableData.value, blank_character.value)
 
-  console.log(tableData.value)
   axios({
     method: 'post',
     url: 'https://localhost:7161/api/CreateTable',
@@ -111,7 +110,7 @@ function saveFile() {
     console.log(err)
   })
 
-  emit('saveFile');
+  emit('saveFile', tableData.value, selectedType.value);
   saveDialog.value = false;
 }
 // TODO: 记得给注册用户名也加上这样的判断，呃。。。移到另一个文件吧
