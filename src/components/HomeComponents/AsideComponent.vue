@@ -3,6 +3,7 @@ import SaveItem from './AsideComponents/SaveItem.vue';
 import { defineEmits } from 'vue';
 const emit = defineEmits(['data']);
 
+
 let fakedata = [
     {
         id: 1,
@@ -37,13 +38,20 @@ function loadADataTable(project_id) {
 </script>
 
 <template>
+<div class="list1">
     <main class="test_aside_background" v-for="item in fakedata">
         <SaveItem :project_id="item.id" :project_name="item.name" :project_date="item.date" @load="loadADataTable" />
     </main>
+</div>
 </template>
 
 <style>
 .test_aside_background {
-    background-color: rebeccapurple;
+    background-color: #4d4d4d;
+    
+}
+.list1{
+margin-top: 15px;
+margin-left: 20px;
 }
 </style>

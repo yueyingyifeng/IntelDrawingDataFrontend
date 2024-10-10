@@ -37,13 +37,19 @@ function deleteCol() {
     <main class="display-row">
         <el-input v-for="(key, index) in row" style="width: auto; margin:10px;" v-model="row[index]" type="text" placeholder="请输入数据" :clearable="true" />
         <el-input v-model="count_add"  style="width: 60px; margin:10px;"  type="number"/>
-        <el-button style="width: auto; margin:10px;" type="primary" @click="addCol">add col</el-button>
-        <el-button style="width: auto; margin:10px;" type="danger" @click="deleteCol">delete col</el-button>
+        <el-button class='btn2' style="width: auto; margin:10px;" type="primary" @click="addCol">add col</el-button>
+        <el-button class='btn3' style="width: auto; margin:10px;" type="danger" @click="deleteCol">delete col</el-button>
     </main>
 </template>
 
 <style>
 .display-row {
     display: flex;
+}
+.btn2{
+background-color:#d4c488;
+}
+.btn3{
+background-color: #443228 ;
 }
 </style>
