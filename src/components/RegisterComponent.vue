@@ -104,7 +104,7 @@ const Register = () => {
 
 	axios({
 		method: 'post',
-		url: API.Register,
+		url: 'https://localhost:7161/api/Register',
 		data: {
 			"Name": formData.name,
 			"Psw": formData.psw,
