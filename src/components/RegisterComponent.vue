@@ -39,6 +39,7 @@ import axios from 'axios';
 import { ElMessage } from 'element-plus'
 import router from '../router/index'
 import { store, API } from '@/Util/Store';
+import { useCookies } from 'vue3-cookies';
 
 const formData = reactive({
 	name: '',
@@ -112,6 +113,7 @@ const Register = () => {
 	}).then(response => {
 		if (response.status == 201) {
 			store.storeUserData(response.data);
+			useCookies().cookies.set(store.cookies.UserData, store.getUserData(), '7d')
 			router.push('/home')
 		}
 	}).catch(err => {

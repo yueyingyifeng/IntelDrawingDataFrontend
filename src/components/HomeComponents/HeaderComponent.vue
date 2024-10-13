@@ -1,6 +1,8 @@
 <script setup>
 import router from '../../router/index'
 import { defineEmits } from 'vue';
+import { store } from '@/Util/Store';
+import { useCookies } from 'vue3-cookies';
 
 const emits = defineEmits(['toCreateTable'])
 
@@ -10,7 +12,8 @@ function toDataTable(){
 }
 
 function logout(){
-    //TODO: 登出逻辑，需要发送一个包含 token 请求，然后使后端 token 失效
+    store.storeUserData(null);
+    useCookies().cookies.remove(store.cookies.UserData)
     router.push('/')
 }
 </script>

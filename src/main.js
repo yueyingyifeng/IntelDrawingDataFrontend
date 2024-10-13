@@ -5,6 +5,7 @@ import 'element-plus/dist/index.css'
 
 import App from './App.vue'
 import router from './router'
+import VueCookies from 'vue3-cookies'
 
 const app = createApp(App)
 //axios 的问题 https://blog.csdn.net/qq_43574079/article/details/108821061
@@ -13,5 +14,6 @@ app.config.globalProperties.$axios = axios
 
 app.use(router)
 app.use(ElementPlus)
+app.use(VueCookies)
 
 app.mount('#app')

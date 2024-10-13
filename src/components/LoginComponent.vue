@@ -31,11 +31,11 @@ import {
 	defineEmits,
 	defineProps,
 	getCurrentInstance
-}
-	from 'vue'
+} from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '../router/index'
 import { store, API } from '@/Util/Store';
+import { useCookies } from 'vue3-cookies';
 const formData = reactive({
 	id: '',
 	psw: '',
@@ -77,6 +77,7 @@ const login = () => {
 	}).then((res) => {
 		if (res.status == 200) {
 			store.storeUserData(res.data);
+			useCookies().cookies.set(store.cookies.UserData, store.getUserData(), '7d')
 			router.push('/home')
 		}
 

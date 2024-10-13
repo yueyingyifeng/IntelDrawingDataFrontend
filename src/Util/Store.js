@@ -24,6 +24,9 @@ export const store = reactive({
     },
     getTableData: function () {
         return this._TableData
+    },
+    cookies:{
+        UserData:"UserData"
     }
 })
 

@@ -1,18 +1,25 @@
 <script setup>
-import { defineProps } from "vue";
+import { ref,defineProps, onMounted } from "vue";
+import { useCookies } from "vue3-cookies";
+import { useRouter } from "vue-router";
+import { store } from "@/Util/Store";
 import LoginComponent from "@/components/LoginComponent.vue";
 import RegisterComponent from "@/components/RegisterComponent.vue";
 
-import { ref } from 'vue'
-
-let isLogin = ref(true)
-
+const isLogin = ref(true)
+const cookies = useCookies().cookies;
 const props = defineProps({
     show: {
         type: Boolean,
         default: true
     }
 });
+onMounted(()=>{
+    if(cookies.isKey(store.cookies.UserData)){
+        store.storeUserData(cookies.get(store.cookies.UserData))
+        useRouter().push('/home');
+    }
+})
 
 </script>
 
