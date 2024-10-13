@@ -3,7 +3,7 @@ import { ref, watch, defineEmits, defineProps } from 'vue';
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
 import ArowConponent from '../CreateTableComponents/ArowConponent.vue';
-import {store, API} from '@/Util/Store.js'
+import {store} from '@/Util/Store.js'
 
 const tableData = ref([[]]);
 const count_add = ref(1)
@@ -22,7 +22,6 @@ const selectedType = ref(ChartTypes[0].value)
 
 const emit = defineEmits(['saveFile', 'previewData']);
 
-console.log(API.Register);
 
 const props = defineProps({
   show:{
@@ -95,7 +94,7 @@ function saveFile() {
 
   axios({
     method: 'post',
-    url: API.CreateTable,
+    url: 'https://localhost:7161/api/CreateTable',
     headers: {
         'Authorization': `Bearer ${store.getUserData().token}`
     },
@@ -184,21 +183,21 @@ function fillArray(arr, fillValue) {
 
       </el-col>
       <el-col :span="2">
-        <el-button type="primary" @click="addRow">Add Row</el-button>
+        <el-button class='btn2' type="primary" @click="addRow">Add Row</el-button>
 
       </el-col>
       <el-col :span="2">
-        <el-button type="danger" @click="deleteRow">Delete Row</el-button>
+        <el-button class='btn3' type="danger" @click="deleteRow">Delete Row</el-button>
       </el-col>
 
       <el-col :span="10"></el-col>
       <el-col :span="4"></el-col>
 
       <el-col :span="4">
-        <el-button type="primary" @click="previewData">
+        <el-button class='btn1' type="primary" @click="previewData">
           Preview Data
         </el-button>
-        <el-button type="success" @click="showSaveFileDialog  ">Save</el-button>
+        <el-button class='btn4' type="success" @click="showSaveFileDialog  ">Save</el-button>
         <el-select v-model="selectedType">
           <el-option v-for="item in ChartTypes" 
             :key="item.value"
@@ -219,7 +218,7 @@ function fillArray(arr, fillValue) {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="saveDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="saveFile">
+        <el-button class='btn4' type="primary" @click="saveFile">
           Save
         </el-button>
       </div>
@@ -227,4 +226,12 @@ function fillArray(arr, fillValue) {
   </el-dialog><!-- el-dialog -->
 </template>
 
-<style></style>
+<style>
+.btn1{
+  background-color:	#7E7B4D;
+}
+.btn4{
+  background-color: 	#dbaebc;
+}
+
+</style>

@@ -72,7 +72,7 @@ const login = () => {
 	// 调用 axios 出了问题，只能用这种方法访问，具体查看 main.js
 	proxy.$axios({
 		method: 'post',
-		url: API.Login,
+		url: 'https://localhost:7161/api/Login',
 		data: loginParams
 	}).then((res) => {
 		if (res.status == 200) {
