@@ -40,6 +40,7 @@ import { ElMessage } from 'element-plus'
 import router from '../router/index'
 import { store, API } from '@/Util/Store';
 import { useCookies } from 'vue3-cookies';
+import { Tool } from '@/Util/Tools';
 
 const formData = reactive({
 	name: '',
@@ -70,13 +71,6 @@ function validatePSW() {
 	return true
 }
 
-function isValidEmail(email) {
-	// 定义用于检测邮箱格式的正则表达式
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return emailRegex.test(email);
-}
-
-
 function fieldsExist() {
 	return !(formData.name === '' || formData.psw === '' || formData.email === '' || formData.c_psw === '')
 }
@@ -90,9 +84,14 @@ function valid() {
 		return false
 	}
 
-	if (!isValidEmail(formData.email)) {
+	if (!Tool.isValidEmail(formData.email)) {
 		ElMessage.error('Invalid email format')
 		return false
+	}
+
+	if(Tool.isValidWindowsFilename(formData.name)){
+		ElMessage.error('Invalid name format')
+		return false;
 	}
 	return true
 }
@@ -104,7 +103,7 @@ const Register = () => {
 
 	axios({
 		method: 'post',
-		url: 'https://localhost:7161/api/Register',
+		url: API.Register,
 		data: {
 			"Name": formData.name,
 			"Psw": formData.psw,
@@ -118,13 +117,12 @@ const Register = () => {
 		}
 	}).catch(err => {
 		if (err.status === 400) {
-			console.log(err)
 			ElMessage.error(err.response.data)
 		}
 		else {
-			console.log(err)
 			ElMessage.error('Network error.')
 		}
+		console.log(err)
 	});
 }
 

@@ -1,11 +1,16 @@
 <script setup>
+import { API } from '@/Util/Store';
+import axios from 'axios';
 import { defineEmits, defineProps } from 'vue'
 const props = defineProps({
     project_id:{
-        type: Number,
         required: true
     },
     project_name:{
+        type: String,
+        required: true
+    },
+    project_type:{
         type: String,
         required: true
     },
@@ -15,10 +20,14 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['load'])
+const emits = defineEmits(['load','deleteChart'])
 
 function toLoad(){
     emits('load', props.project_id)
+}
+
+function toDelete(){
+    emits('deleteChart', props.project_id)
 }
 
 
@@ -26,10 +35,14 @@ function toLoad(){
 <template>
     <main class="test_aside_item">
         <el-row>
-            <el-col :span="8">{{project_name}}</el-col>
-            <el-col :span="8">{{project_date}}</el-col>
-            <el-col :span="8">
+            <el-col :span="6">{{project_name}}</el-col>
+            <el-col :span="6">{{project_date}}</el-col>
+            <el-col :span="6">类型：{{project_type}}</el-col>
+
+            <el-col :span="6">
                 <el-button class='btn' type="primary" @click="toLoad">Load</el-button>
+                <el-button class='btn' type="danger" @click="toDelete">Delete</el-button>
+
             </el-col>
 
         </el-row>

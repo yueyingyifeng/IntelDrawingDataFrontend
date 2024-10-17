@@ -1,8 +1,8 @@
 <script setup>
 import { ref,defineProps, onMounted } from "vue";
 import { useCookies } from "vue3-cookies";
-import { useRouter } from "vue-router";
-import { store } from "@/Util/Store";
+
+
 import LoginComponent from "@/components/LoginComponent.vue";
 import RegisterComponent from "@/components/RegisterComponent.vue";
 
@@ -14,12 +14,6 @@ const props = defineProps({
         default: true
     }
 });
-onMounted(()=>{
-    if(cookies.isKey(store.cookies.UserData)){
-        store.storeUserData(cookies.get(store.cookies.UserData))
-        useRouter().push('/home');
-    }
-})
 
 </script>
 <template>

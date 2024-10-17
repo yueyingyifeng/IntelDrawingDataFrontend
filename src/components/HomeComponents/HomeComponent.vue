@@ -55,9 +55,6 @@ function initChart() {
 
     if (props.data.length < 1 || props.type === '')
         return;
-    console.log(props.type);
-    console.log(props.data);
-
 
     chart = new Chart(
         document.getElementById('ctx'),
@@ -75,6 +72,7 @@ function initChart() {
 
 <template>
     <main v-show="show" >
+        <!-- FIXME css: 图表大小适配问题，圆形的图表总是显得很大 -->
         <canvas style="width: auto;" class="ctx" id="ctx"></canvas>
     </main>
 </template>
