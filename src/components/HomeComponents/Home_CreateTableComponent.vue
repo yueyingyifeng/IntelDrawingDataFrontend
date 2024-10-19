@@ -174,38 +174,29 @@ function fillArray(arr, fillValue) {
 			<el-input v-model="blank_character" style="width: 60px;max-width: 60px;min-width: 60px;" type="text" />
 			代替
 		</p>
-
 		<hr />
-		
 		<ArowConponent v-for="(item, index) in tableData" :row="tableData[index]" />
+		<el-row type="flex" justify="space-between" align="middle">
+    <el-col :span="7" style="display: flex; align-items: center;">
+        <el-input v-model="count_add" style="width:20%;" type="number" />
+        <el-button type="primary" @click="addRow" style="margin-left: 1%;">Add Row</el-button>
+        <el-button type="danger" @click="deleteRow" style="margin-left: 2%;">Delete Row</el-button>
+    </el-col>
 
-		<el-row>
-			<el-col :span="1">
-				<el-input v-model="count_add" style="width: 60px;min-width: 60px;max-width: 60px;" type="number"  />
 
-			</el-col>
-			<el-col :span="2">
-				<el-button  type="primary" style="margin-left: 15px;margin-top: 4px;" @click="addRow">Add Row</el-button>
+    <el-col :span="1"></el-col>
 
-			</el-col>
-			<el-col :span="2">
-				<el-button  type="danger" style="margin-left:0px;margin-top: 4px;" @click="deleteRow">Delete Row</el-button>
-			</el-col>
 
-			<el-col :span="10"></el-col>
-			<el-col :span="4"></el-col>
-
-			<el-col :span="4">
-				<el-button  type="primary" @click="previewData">
-					Preview Data
-				</el-button>
-				<el-button type="success" @click="showSaveFileDialog">Save</el-button>
-				<el-select v-model="selectedType">
-					<el-option v-for="item in ChartTypes" :key="item.value" :label="item.label" :value="item.value" />
-				</el-select>
-			</el-col>
-
-		</el-row>
+    <el-col :span="10" style="display: flex; flex-direction: column; align-items: flex-end;">
+        <div style="display: flex;">
+            <el-button type="primary" @click="previewData">Preview Data</el-button>
+            <el-button type="success" @click="showSaveFileDialog" style="margin-left:1%;margin-bottom: 0%;">Save</el-button>
+        </div>
+        <el-select v-model="selectedType" style="margin-top:0%; width:31%;">
+            <el-option v-for="item in ChartTypes" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+    </el-col>
+</el-row>
 
 	</main>
 

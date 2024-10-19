@@ -14,10 +14,10 @@ app.config.globalProperties.$axios = axios
 
 import { store } from './Util/Store'
 import { useCookies } from "vue3-cookies";
-if( useCookies().cookies.isKey(store.cookies.UserData)){
-    store.storeUserData( useCookies().cookies.get(store.cookies.UserData))
-    router.push('/home');
-}
+// if( useCookies().cookies.isKey(store.cookies.UserData)){
+//     store.storeUserData( useCookies().cookies.get(store.cookies.UserData))
+//     router.push('/home');
+// }
 
 app.use(router)
 app.use(ElementPlus)

@@ -27,17 +27,17 @@ provide('chartList',chartList)
 provide('toBeEdited',toBeEdited)
 
 
-onMounted(() => {
-	if(store.getUserData().token == null || store.getUserData().token.length < 48){
-		ElMessageBox.alert(  '<span style="color: black;">Please Login first</span>', 
-		'Please Login first',
-		);
-		useRouter().push("/");
-	}
-	else{
-		GetChartList();
-	}
-});
+// onMounted(() => {
+// 	if(store.getUserData().token == null || store.getUserData().token.length < 48){
+// 		ElMessageBox.alert(  '<span style="color: black;">Please Login first</span>', 
+// 		'Please Login first',
+// 		);
+// 		useRouter().push("/");
+// 	}
+// 	else{
+// 		GetChartList();
+// 	}
+// });
 
 function saveChart(data,type){
 	currentData.value = data;
@@ -71,11 +71,12 @@ function GetChartList(){
             chartList.value = res.data.data;
         }
 		else{
-			ElMessageBox.alert(  '<span style="color: black;">Get Charts Lists Failed</span>', 
-			'Get Charts Lists Failed',)
+			ElMessageBox.alert( '<span style="color: black;">Get charts list failed</span>', 
+		'Get charts list failed',)
 		}
     }).catch(err=>{
-		ElMessageBox.alert("Get charts list failed")
+		ElMessageBox.alert( '<span style="color: black;">Get charts list failed</span>', 
+		'Get charts list failed',)
         console.log(err);
     })
 }
@@ -152,7 +153,7 @@ function toEdit(){
 html, body {
     margin: 0;
     padding: 0;
-    
+    color:black
 }
 
 </style>
