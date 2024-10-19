@@ -89,7 +89,7 @@ function valid() {
 		return false
 	}
 
-	if(Tool.isValidWindowsFilename(formData.name)){
+	if(!Tool.isValidWindowsFilename(formData.name)){
 		ElMessage.error('Invalid name format')
 		return false;
 	}
