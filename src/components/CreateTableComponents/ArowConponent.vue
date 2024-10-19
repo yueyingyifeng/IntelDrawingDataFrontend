@@ -35,10 +35,10 @@ function deleteCol() {
 
 <template>
     <main class="display-row">
-        <el-input v-for="(key, index) in row" style="width: auto; margin:10px;" v-model="row[index]" type="text" placeholder="请输入数据" :clearable="true" />
-        <el-input v-model="count_add"  style="width: 60px; margin:10px;"  type="number"/>
-        <el-button class='btn2' style="width: auto; margin:10px;" type="primary" @click="addCol">add col</el-button>
-        <el-button class='btn3' style="width: auto; margin:10px;" type="danger" @click="deleteCol">delete col</el-button>
+        <el-input v-for="(key, index) in row"  v-model="row[index]" type="text" placeholder="请输入数据" :clearable="true" />
+        <el-input v-model="count_add"  style="width: 60px; max-width: 60px;min-width: 60px;margin:4px;"  type="number"/>
+        <el-button class='btn2' style="width: auto; margin-left:4px; margin-top: 4px;" type="primary" @click="addCol">add col</el-button>
+        <el-button class='btn3' style="width: auto; margin-left:7px;margin-top: 4px;" type="danger" @click="deleteCol">delete col</el-button>
     </main>
 </template>
 
@@ -52,4 +52,13 @@ background-color:#d4c488;
 .btn3{
 background-color: #443228 ;
 }
+.el-input {
+margin: 5px; 
+    width: 170px; 
+    min-width: 170px; 
+    max-width: 170px; 
+    height: 30px;
+}
+
+
 </style>

@@ -71,10 +71,14 @@ function initChart() {
 </script>
 
 <template>
+    <div class="limit1">
+    <div class="limit2">
     <main v-show="show" >
-        <!-- FIXME css: 图表大小适配问题，圆形的图表总是显得很大 -->
+       
         <canvas style="width: auto;" class="ctx" id="ctx"></canvas>
     </main>
+    </div>
+    </div>
 </template>
 
 <style>
@@ -82,6 +86,18 @@ function initChart() {
     width: auto;
     height: 1px;
 }
+.limit1 {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.limit2 {
+    width: 100%;
+    max-width: 700px; 
+    height: auto; 
+}
+
 </style>
 
 

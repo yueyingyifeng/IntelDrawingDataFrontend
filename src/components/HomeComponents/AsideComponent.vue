@@ -10,6 +10,7 @@ const deleteDialogVisible = ref(false)
 const chart_list = inject('chartList')
 const deleteDialog = ref(false)
 const readyToDeleteFileID = ref()
+const toBeEdited = inject("toBeEdited")
 
 function loadADataTable(project_id) {
     emit('load', project_id)
@@ -37,6 +38,8 @@ function deleteChartConfirm(){
         console.log(err)
     })
     deleteDialog.value = false
+    toBeEdited.isAChartLoaded = false;
+	toBeEdited.isEditMode = false
 }
 
 function deleteChart(project_id){
@@ -49,23 +52,26 @@ function deleteChart(project_id){
 </script>
 
 <template>
-<div class="list1">
-    <div>
-        <p>用户名：{{ store.getUserData().userInfo.name }}</p>
+
+    <div class="list1">
+        <p>User name：{{ store.getUserData().userInfo.name }}</p>
         <p>ID    : {{ store.getUserData().userInfo.id }}</p>
-        <p>注册时间： {{ new Date(store.getUserData().userInfo.createTime * 1).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }) }}</p>
+        <p>Registe time： {{ new Date(store.getUserData().userInfo.createTime * 1).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }) }}</p>
     </div>
-    <!--  TODO css: 这里的内容过于紧凑改完后删除这个 TODO 项-->
+    
     <main class="test_aside_background" v-for="item in chart_list">
-        <SaveItem
-         :project_id="item.fileID"
-         :project_name="item.name"
-         :project_type="item.type"
-         :project_date="new Date(item.createTime * 1).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })" 
+        
+        <SaveItem 
+         :project_id="item.fileID " 
+         :project_name="item.name "
+         :project_type="item.type "
+         :project_date="new Date(item.createTime * 1).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }) " 
          @load="loadADataTable"
-         @deleteChart="deleteChart" />
+      @deleteChart="deleteChart" />
+ 
+
     </main>
-</div>
+
     <!-- 删除确认框 -->
     <el-dialog
         v-model="deleteDialog"
@@ -89,11 +95,25 @@ function deleteChart(project_id){
 
 <style>
 .test_aside_background {
-    background-color: #4d4d4d;
-    
+    margin-left: 20px;
+   display: block;
+    background-color: #777777;
+  
+
 }
 .list1{
 margin-top: 15px;
 margin-left: 20px;
+background-color: #333333;
+border-radius: 5px;
+opacity: .7;
 }
+p{
+	margin-left: 7px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: 'Montserrat', sans-serif;
+	color: white;
+}
+
 </style>
