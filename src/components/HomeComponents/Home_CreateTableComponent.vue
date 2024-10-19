@@ -35,7 +35,11 @@ watch(() => toBeEdited.isEditMode, (newVal, oldVal) => {
 		file_name.value = toBeEdited.fileName
 		selectedType.value = toBeEdited.fileType
 		tableData.value = toBeEdited.data
-
+	}
+	else{
+		file_name.value = "null"
+		selectedType.value = "bar"
+		tableData.value = Array.from({ length: 3 }, () => Array(3).fill("0"))
 	}
 });
 
@@ -162,40 +166,40 @@ function fillArray(arr, fillValue) {
 
 <template>
 	<main v-show="show">
-		<p>
+		<p style="font-weight: bold;color: black;">
 			{{ tableData.length }} X {{ tableData[0].length }}
 		</p>
-		<p>
+		<p style="color: black;">
 			空白单元用
-			<el-input v-model="blank_character" style="width: 60px;" type="text" />
+			<el-input v-model="blank_character" style="width: 60px;max-width: 60px;min-width: 60px;" type="text" />
 			代替
 		</p>
 
 		<hr />
-		<!-- FIXME css: 鼠标悬停在 input 上的时候会显示清空按钮，同时会导致抖动 -->
+		
 		<ArowConponent v-for="(item, index) in tableData" :row="tableData[index]" />
 
 		<el-row>
 			<el-col :span="1">
-				<el-input v-model="count_add" style="width: 60px;" type="number" />
+				<el-input v-model="count_add" style="width: 60px;min-width: 60px;max-width: 60px;" type="number"  />
 
 			</el-col>
 			<el-col :span="2">
-				<el-button class='btn2' type="primary" @click="addRow">Add Row</el-button>
+				<el-button  type="primary" style="margin-left: 15px;margin-top: 4px;" @click="addRow">Add Row</el-button>
 
 			</el-col>
 			<el-col :span="2">
-				<el-button class='btn3' type="danger" @click="deleteRow">Delete Row</el-button>
+				<el-button  type="danger" style="margin-left:0px;margin-top: 4px;" @click="deleteRow">Delete Row</el-button>
 			</el-col>
 
 			<el-col :span="10"></el-col>
 			<el-col :span="4"></el-col>
 
 			<el-col :span="4">
-				<el-button class='btn1' type="primary" @click="previewData">
+				<el-button  type="primary" @click="previewData">
 					Preview Data
 				</el-button>
-				<el-button class='btn4' type="success" @click="showSaveFileDialog">Save</el-button>
+				<el-button type="success" @click="showSaveFileDialog">Save</el-button>
 				<el-select v-model="selectedType">
 					<el-option v-for="item in ChartTypes" :key="item.value" :label="item.label" :value="item.value" />
 				</el-select>
@@ -213,7 +217,7 @@ function fillArray(arr, fillValue) {
 		<template #footer>
 			<div class="dialog-footer">
 				<el-button @click="saveDialog = false">Cancel</el-button>
-				<el-button class='btn4' type="primary" @click="saveFile">
+				<el-button  type="primary" @click="saveFile">
 					Save
 				</el-button>
 			</div>
@@ -222,11 +226,8 @@ function fillArray(arr, fillValue) {
 </template>
 
 <style>
-.btn1 {
-	background-color: #7E7B4D;
-}
 
-.btn4 {
-	background-color: #dbaebc;
-}
+
 </style>
+
+

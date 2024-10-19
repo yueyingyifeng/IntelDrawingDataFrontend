@@ -10,6 +10,8 @@ const toBeEdited = inject('toBeEdited')
 
 function toDataTable(){
     backSign.value = "(返回)"
+    toBeEdited.isAChartLoaded = false;
+	toBeEdited.isEditMode = false
     emits('toCreateTable')
 }
 
@@ -25,6 +27,8 @@ function logout(){
 
 function showChart(){
     backSign.value = ''
+    toBeEdited.isAChartLoaded = false
+    toBeEdited.isEditMode = false
     emits('showChart')
 }
 </script>
@@ -32,22 +36,21 @@ function showChart(){
 <template>
     <main class="test_header_background">
         <el-row>
-            <!-- FIXME css: 点击创建，"（返回）"会出现，这样会导致产生“抖动” -->
-            <!-- FIXME css: 两边分散 -->
+            
             <el-button class="hover-button" :span="6" @click = "showChart">智绘数据{{ backSign }}</el-button>
             <el-col class="el-col_content" :span="6"></el-col>
             
-            <el-col class="el-col_content" :span="3"></el-col>
             <el-button class="hover-button" :span="6" @click="toDataTable" >
                     Create Data Chart
             </el-button>
-            <el-button class="hover-button" :span="6" @click="toEditChart" v-show="toBeEdited.isAChartLoaded">
+            <el-col class="el-col_content" :span="3"></el-col>
+            <el-button class="hover-button" :span="5" @click="toEditChart" v-show="toBeEdited.isAChartLoaded" >
                     Edit Chart {{ toBeEdited.fileName }} 
             </el-button>
-            <el-col class="el-col_content" :span="3"></el-col>
+        
             
-            <el-col class="el-col_content" :span="3"></el-col>
-            <el-button class="hover-button" :span="3" @click="logout">
+            <el-col class="el-col_content" :span="6"></el-col>
+            <el-button class="hover-button" :span="6" @click="logout">
                 Logout
             </el-button>
         </el-row>
@@ -61,7 +64,7 @@ function showChart(){
     padding: 1%;
 }
 .test_header_background{
-    background-color:#a69f92;
+    background-color:#333333;
 }
 .hover-area {
   position: relative;
