@@ -31,7 +31,7 @@ export const store = reactive({
 })
 
 export const API = (() => {
-    const API_ROOT = "https://localhost:7161/api/";
+    const API_ROOT = import.meta.env.VITE_API_ROOT
 
     return {
         API_ROOT,
