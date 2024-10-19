@@ -166,10 +166,10 @@ function fillArray(arr, fillValue) {
 
 <template>
 	<main v-show="show">
-		<p style="font-weight: bold;color: black;">
+		<p style="font-weight: bold;color: black;margin:0%;">
 			{{ tableData.length }} X {{ tableData[0].length }}
 		</p>
-		<p style="color: black;">
+		<p style="color: black;margin:0%;">
 			空白单元用
 			<el-input v-model="blank_character" style="width: 60px;max-width: 60px;min-width: 60px;" type="text" />
 			代替

@@ -34,37 +34,33 @@ function showChart(){
 </script>
 
 <template>
-    <main class="test_header_background">
-        <el-row>
-            
-            <el-button class="hover-button" :span="6" @click = "showChart">智绘数据{{ backSign }}</el-button>
-            <el-col class="el-col_content" :span="6"></el-col>
-            
-            <el-button class="hover-button" :span="6" @click="toDataTable" >
-                    Create Data Chart
-            </el-button>
-            <el-col class="el-col_content" :span="3"></el-col>
-            <el-button class="hover-button" :span="5" @click="toEditChart" v-show="toBeEdited.isAChartLoaded" >
-                    Edit Chart {{ toBeEdited.fileName }} 
-            </el-button>
-        
-            
-            <el-col class="el-col_content" :span="6"></el-col>
-            <el-button class="hover-button" :span="6" @click="logout">
-                Logout
-            </el-button>
-        </el-row>
-    </main>
+   <main class="test_header_background">
+  <el-row>
+    <el-button class="hover-button" @click="showChart">智绘数据{{ backSign }}</el-button>
+    
+    <el-button class="hover-button" @click="toDataTable">Create Data Chart</el-button>
+    
+    <el-button class="hover-button" @click="toEditChart" v-show="toBeEdited.isAChartLoaded">
+      Edit Chart {{ toBeEdited.fileName }} 
+    </el-button>
+    
+    <el-button class="hover-button" @click="logout">Logout</el-button>
+  </el-row>
+</main>
 </template>
 
 <style>
-.el-col_content{
-    text-align: center; 
-    height: 60px;
-    padding: 1%;
-}
+
 .test_header_background{
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%; 
     background-color:#333333;
+    padding: 10px 0;
+    box-shadow: 0 4px 2px -2px gray; 
+    z-index: 1000; 
+    
 }
 .hover-area {
   position: relative;
@@ -72,20 +68,33 @@ function showChart(){
 
 .hover-button {  
     text-align: center; 
-    height: 60px;
+    height: 10%;
     padding: 1%;
-  background-color: transparent; /* 默认背景色透明 */
-  border: 2px solid transparent; /* 默认边框透明 */
-  color: rgb(255, 255, 255); /* 默认文字颜色 */
-  padding: 10px 20px; /* 按钮内边距 */
-  transition: background-color 0.3s, border-color 0.3s; /* 动画过渡效果 */
+  background-color: transparent; 
+  border: 2px solid transparent; 
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  transition: background-color 0.3s, border-color 0.3s; 
  
 }
 
 .hover-area:hover .hover-button {
-  background-color: #4CAF50; /* 悬浮时的背景色 */
-  border-color: #4CAF50; /* 悬浮时的边框颜色 */
-  color: white; /* 悬浮时文本颜色 */
-  border-radius: 5px; /* 圆角 */
+  background-color: #4CAF50; 
+  border-color: #4CAF50; 
+  color: white; 
+  border-radius: 5px; 
+  flex: 1; /* 每个按钮按比例平分空间 */
+    margin: 0 10px;
+    text-align: center;
+    box-sizing: border-box
 }
+.test_header_background .el-row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin: 0; 
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
 </style>

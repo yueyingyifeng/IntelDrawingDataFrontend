@@ -29,7 +29,9 @@ provide('toBeEdited',toBeEdited)
 
 onMounted(() => {
 	if(store.getUserData().token == null || store.getUserData().token.length < 48){
-		ElMessageBox.alert("Please Login first");
+		ElMessageBox.alert(  '<span style="color: black;">Please Login first</span>', 
+		'Please Login first',
+		);
 		useRouter().push("/");
 	}
 	else{
@@ -69,7 +71,8 @@ function GetChartList(){
             chartList.value = res.data.data;
         }
 		else{
-			ElMessageBox.alert("Get charts list failed")
+			ElMessageBox.alert(  '<span style="color: black;">Get Charts Lists Failed</span>', 
+			'Get Charts Lists Failed',)
 		}
     }).catch(err=>{
 		ElMessageBox.alert("Get charts list failed")

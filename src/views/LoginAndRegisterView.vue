@@ -19,7 +19,7 @@ const props = defineProps({
 <template>
     <main class="test_header_background">
         <el-row>
-            <el-col class="el-col_content" :span="6" >ITchart.</el-col>
+            <el-col class="el-col_content" :span="1" style="color: white;margin-left: 10%;">ITchart.</el-col>
      
         </el-row>
     </main>
@@ -63,7 +63,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;  
-    height: 75vh;  
+    height: 87vh;  
 }
 
 .box {
@@ -79,8 +79,8 @@ html, body {
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%; 
-    max-width: 600px;
-    height: 370px; 
+    max-width: 100%;
+    height: 100%; 
 }
 
 .center-card {
