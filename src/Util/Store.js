@@ -24,10 +24,13 @@ export const store = reactive({
     },
     getTableData: function () {
         return this._TableData
+    },
+    cookies:{
+        UserData:"UserData"
     }
 })
 
-export const API = reactive(() => {
+export const API = (() => {
     const API_ROOT = "https://localhost:7161/api/";
 
     return {
@@ -35,5 +38,9 @@ export const API = reactive(() => {
         Login:       API_ROOT + "Login",
         Register:    API_ROOT + "Register",
         CreateTable: API_ROOT + "CreateTable",
+        GetChartList:API_ROOT + "GetChartList",
+        LoadChart:   API_ROOT + "LoadChart",
+        DeleteChart: API_ROOT + "DeleteTable",
+        UpDateChart: API_ROOT + "UpDateChart",
     };
 })();

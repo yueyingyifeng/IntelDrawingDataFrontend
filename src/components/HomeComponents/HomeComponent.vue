@@ -55,9 +55,6 @@ function initChart() {
 
     if (props.data.length < 1 || props.type === '')
         return;
-    console.log(props.type);
-    console.log(props.data);
-
 
     chart = new Chart(
         document.getElementById('ctx'),
@@ -74,9 +71,14 @@ function initChart() {
 </script>
 
 <template>
+    <div class="limit1">
+    <div class="limit2">
     <main v-show="show" >
+       
         <canvas style="width: auto;" class="ctx" id="ctx"></canvas>
     </main>
+    </div>
+    </div>
 </template>
 
 <style>
@@ -84,6 +86,18 @@ function initChart() {
     width: auto;
     height: 1px;
 }
+.limit1 {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.limit2 {
+    width: 100%;
+    max-width: 700px; 
+    height: auto; 
+}
+
 </style>
 
 
