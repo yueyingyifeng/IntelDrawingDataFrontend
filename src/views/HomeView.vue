@@ -15,8 +15,6 @@ const currentType = ref('');
 const showData = ref(true);
 const chartList = ref([]);
 const toBeEdited = reactive({
-	isEditMode : false,
-	isAChartLoaded : false,
 	fileID   : null,
 	fileName : null,
 	fileType : null,
@@ -26,15 +24,14 @@ const toBeEdited = reactive({
 provide('chartList',chartList)
 provide('toBeEdited',toBeEdited)
 
-
 onMounted(() => {
 	if(store.getUserData().token == null || store.getUserData().token.length < 48){
-		ElMessageBox.alert("Please Login first");
-		useRouter().push("/");
-	}
-	else{
-		GetChartList();
-	}
+        ElMessageBox.alert('', 'Please Login first');
+        useRouter().push("/");
+    }
+    else{
+        GetChartList();
+    }
 });
 
 function saveChart(data,type){
@@ -43,17 +40,18 @@ function saveChart(data,type){
 	showData.value = true;
 	// FIXME：如果没有延迟，将无法显示出新增项
 	setTimeout(GetChartList,100)
-	toBeEdited.isAChartLoaded = false;
-	toBeEdited.isEditMode = false
 }
 
-function showChart(data, type) {
-	currentData.value = data;
-	currentType.value = type;
-	showData.value = true;
-	toBeEdited.isAChartLoaded = false;
-	toBeEdited.isEditMode = false
 
+function previewData(data, type) {
+	console.log("previewData")
+	currentData.value = [...data];
+	currentType.value = type;
+
+	toBeEdited.data = currentData.value;
+	toBeEdited.fileType = currentType.value;
+
+	showData.value = true;
 }
 
 function GetChartList(){
@@ -69,7 +67,7 @@ function GetChartList(){
             chartList.value = res.data.data;
         }
 		else{
-			ElMessageBox.alert("Get charts list failed")
+			ElMessageBox.alert("Get charts list failed with status code "+res.status)
 		}
     }).catch(err=>{
 		ElMessageBox.alert("Get charts list failed")
@@ -91,24 +89,33 @@ function loadChart(fileID){
 			currentFileID.value = fileID
 			currentData.value = res.data.data
 			currentType.value = res.data.fileType
+			showData.value = true
 
 			toBeEdited.fileID = fileID
 			toBeEdited.fileName = chartList.value.find( item=> item.fileID == currentFileID.value)?.name
 			toBeEdited.fileType = currentType.value
 			toBeEdited.data = currentData.value
-
-			toBeEdited.isAChartLoaded = true
 		}
 		else console.log(err)
 	}).catch(err=>{
 		ElMessage.error(err.response.data)
 		console.log(err)
 	})
+	
 }
 
 function toEdit(){
-	toBeEdited.isEditMode = true
 	showData.value = false
+}
+
+function toCreateTable(){
+	showData.value = false
+}
+
+function back(){
+	if(toBeEdited.isPreviewMode && toBeEdited.isEditMode && toBeEdited.isCreateMode){
+		showData.value = false
+	}
 }
 
 </script>
@@ -118,9 +125,9 @@ function toEdit(){
 		<el-container>
 			<el-header>
 				<HeaderComponent
-				@toCreateTable="showData = false" 
+				@toCreateTable="toCreateTable" 
 				@toEditChart = "toEdit"
-				@showChart="showData = true" />
+				@back="back" />
 			</el-header>
 
 			<el-container>
@@ -136,7 +143,7 @@ function toEdit(){
 
 					<Home_CreateTableComponent 
 					@saveFile="saveChart" 
-					@previewData="showChart" 
+					@previewData="previewData" 
 					:show="!showData" />
 				</el-main>
 

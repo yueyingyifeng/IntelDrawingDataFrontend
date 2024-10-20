@@ -1,17 +1,14 @@
 <script setup>
 import router from '../../router/index'
-import { defineEmits, inject, ref } from 'vue';
+import { defineEmits, inject, ref, watch } from 'vue';
 import { store } from '@/Util/Store';
 import { useCookies } from 'vue3-cookies';
 
-const emits = defineEmits(['toCreateTable', "showChart","toEditChart"])
+const emits = defineEmits(['toCreateTable', "back","toEditChart"])
 const backSign = ref("");
 const toBeEdited = inject('toBeEdited')
 
-function toDataTable(){
-    backSign.value = "(返回)"
-    toBeEdited.isAChartLoaded = false;
-	toBeEdited.isEditMode = false
+function toCreateChart(){
     emits('toCreateTable')
 }
 
@@ -25,11 +22,10 @@ function logout(){
     router.push('/')
 }
 
-function showChart(){
-    backSign.value = ''
-    toBeEdited.isAChartLoaded = false
-    toBeEdited.isEditMode = false
-    emits('showChart')
+
+
+function back(){
+    emits('back')
 }
 </script>
 
@@ -37,10 +33,10 @@ function showChart(){
     <main class="test_header_background">
         <el-row>
             
-            <el-button class="hover-button" :span="6" @click = "showChart">智绘数据{{ backSign }}</el-button>
+            <el-button class="hover-button" :span="6" @click = "back">智绘数据{{ backSign }}</el-button>
             <el-col class="el-col_content" :span="6"></el-col>
             
-            <el-button class="hover-button" :span="6" @click="toDataTable" >
+            <el-button class="hover-button" :span="6" @click="toCreateChart" >
                     Create Data Chart
             </el-button>
             <el-col class="el-col_content" :span="3"></el-col>

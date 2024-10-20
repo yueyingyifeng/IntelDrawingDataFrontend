@@ -5,7 +5,6 @@ import axios from 'axios';
 import ArowConponent from '../CreateTableComponents/ArowConponent.vue';
 import { store, API } from '@/Util/Store.js'
 import { Tool } from '@/Util/Tools';
-// const tableData =  ref([[]]);
 const tableData = ref(Array.from({ length: 3 }, () => Array(3).fill("0")));
 tableData.value[0][0] = "/"
 const count_add = ref(1)
@@ -30,18 +29,20 @@ const props = defineProps({
 	}
 })
 
-watch(() => toBeEdited.isEditMode, (newVal, oldVal) => {
-	if (toBeEdited.isEditMode) {
-		file_name.value = toBeEdited.fileName
-		selectedType.value = toBeEdited.fileType
-		tableData.value = toBeEdited.data
+watch(toBeEdited,
+	(newVal, oldVal) => {
+		if (toBeEdited.isAChartLoaded) {
+			file_name.value = toBeEdited.fileName
+			selectedType.value = toBeEdited.fileType
+			tableData.value = toBeEdited.data
+		}
+		else {
+			file_name.value = ""
+			selectedType.value = "bar"
+			tableData.value = Array.from({ length: 3 }, () => Array(3).fill(blank_character.value))
+		}
 	}
-	else{
-		file_name.value = "null"
-		selectedType.value = "bar"
-		tableData.value = Array.from({ length: 3 }, () => Array(3).fill("0"))
-	}
-});
+);
 
 watch(blank_character, (newVal, oldVal) => {
 	if (newVal == '')
@@ -105,8 +106,8 @@ function saveFile() {
 
 
 	tableData.value = fillArray(tableData.value, blank_character.value)
-	console.log(toBeEdited.isEditMode)
-	if (toBeEdited.isEditMode)
+
+	if (!(toBeEdited.isCreateMode && toBeEdited.isEditMode))
 		axios({
 			method: 'Patch',
 			url: API.UpDateChart,
@@ -176,27 +177,28 @@ function fillArray(arr, fillValue) {
 		</p>
 
 		<hr />
-		
+
 		<ArowConponent v-for="(item, index) in tableData" :row="tableData[index]" />
 
 		<el-row>
 			<el-col :span="1">
-				<el-input v-model="count_add" style="width: 60px;min-width: 60px;max-width: 60px;" type="number"  />
+				<el-input v-model="count_add" style="width: 60px;min-width: 60px;max-width: 60px;" type="number" />
 
 			</el-col>
 			<el-col :span="2">
-				<el-button  type="primary" style="margin-left: 15px;margin-top: 4px;" @click="addRow">Add Row</el-button>
+				<el-button type="primary" style="margin-left: 15px;margin-top: 4px;" @click="addRow">Add Row</el-button>
 
 			</el-col>
 			<el-col :span="2">
-				<el-button  type="danger" style="margin-left:0px;margin-top: 4px;" @click="deleteRow">Delete Row</el-button>
+				<el-button type="danger" style="margin-left:0px;margin-top: 4px;" @click="deleteRow">Delete
+					Row</el-button>
 			</el-col>
 
 			<el-col :span="10"></el-col>
 			<el-col :span="4"></el-col>
 
 			<el-col :span="4">
-				<el-button  type="primary" @click="previewData">
+				<el-button type="primary" @click="previewData">
 					Preview Data
 				</el-button>
 				<el-button type="success" @click="showSaveFileDialog">Save</el-button>
@@ -217,7 +219,7 @@ function fillArray(arr, fillValue) {
 		<template #footer>
 			<div class="dialog-footer">
 				<el-button @click="saveDialog = false">Cancel</el-button>
-				<el-button  type="primary" @click="saveFile">
+				<el-button type="primary" @click="saveFile">
 					Save
 				</el-button>
 			</div>
@@ -225,9 +227,4 @@ function fillArray(arr, fillValue) {
 	</el-dialog><!-- el-dialog -->
 </template>
 
-<style>
-
-
-</style>
-
-
+<style></style>

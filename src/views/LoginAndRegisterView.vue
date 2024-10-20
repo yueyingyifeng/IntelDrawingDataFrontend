@@ -19,7 +19,7 @@ const props = defineProps({
 <template>
     <main class="test_header_background">
         <el-row>
-            <el-col class="el-col_content" :span="6" >ITchart.</el-col>
+            <el-col class="el-col_content" :span="1" style="color: white;">ITchart.</el-col>
      
         </el-row>
     </main>

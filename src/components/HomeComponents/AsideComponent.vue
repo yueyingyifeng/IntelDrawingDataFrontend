@@ -54,9 +54,9 @@ function deleteChart(project_id){
 <template>
 
     <div class="list1">
-        <p>User name：{{ store.getUserData().userInfo.name }}</p>
-        <p>ID    : {{ store.getUserData().userInfo.id }}</p>
-        <p>Registe time： {{ new Date(store.getUserData().userInfo.createTime * 1).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }) }}</p>
+        <p>User name：{{ store.getUserData()?.userInfo.name }}</p>
+        <p>ID    : {{ store.getUserData()?.userInfo.id }}</p>
+        <p>Registe time： {{ new Date(store.getUserData()?.userInfo.createTime * 1).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }) }}</p>
     </div>
     
     <main class="test_aside_background" v-for="item in chart_list">

@@ -1,7 +1,6 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
-    _TableData: [[]],
     _UserData: {
         "token": "none",
         "userInfo": {
@@ -15,15 +14,9 @@ export const store = reactive({
     storeUserData: function (userData) {
         this._UserData = userData
     },
-    storeTableData: function (tableData) {
-        this._TableData = tableData
-    },
 
     getUserData: function () {
         return this._UserData
-    },
-    getTableData: function () {
-        return this._TableData
     },
     cookies:{
         UserData:"UserData"

@@ -1,18 +1,10 @@
 <script setup>
 import Chart from 'chart.js/auto'
-import { onMounted, defineProps, watch } from 'vue';
+import { onMounted, defineProps, watch, inject } from 'vue';
 
 let chart;
-
+const toBeEdited = inject('toBeEdited');
 const props = defineProps({
-    data: {
-        type: Array,
-        required: true
-    },
-    type: {
-        type: String,
-        default: 'bar'
-    },
     show: {
         type: Boolean,
         default: true
@@ -20,18 +12,6 @@ const props = defineProps({
 })
 
 
-watch(
-    () => props.data,
-    (newVal, oldVal) => {
-        initChart()
-    }
-)
-
-watch(() => props.type,
-    (newVal, oldVal) => {
-        initChart()
-    }
-)
 
 onMounted(() => {
     initChart();
@@ -53,14 +33,14 @@ function initChart() {
         chart.destroy();
     }
 
-    if (props.data.length < 1 || props.type === '')
+    if (toBeEdited.data.length < 1 || toBeEdited.fileType === '')
         return;
 
     chart = new Chart(
         document.getElementById('ctx'),
         {
-            type: props.type,
-            data: formatData(props.data)
+            type: toBeEdited.fileType,
+            data: formatData(toBeEdited.data)
         }
     );
 }
