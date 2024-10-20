@@ -95,23 +95,23 @@ function deleteChart(project_id){
 
 <style>
 .test_aside_background {
-    margin-left: 20px;
+    margin-left: 7%;
    display: block;
     background-color: #777777;
   
 
 }
 .list1{
-margin-top: 15px;
-margin-left: 20px;
+margin-top: 5%;
+margin-left: 7%;
 background-color: #333333;
 border-radius: 5px;
 opacity: .7;
 }
 p{
-	margin-left: 7px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-left: 5%;
+	margin-top: 3%;
+	margin-bottom: 5%;
 	font-family: 'Montserrat', sans-serif;
 	color: white;
 }

@@ -34,19 +34,19 @@ function toDelete(){
 </script>
 <template>
     <main class="test_aside_item">
-         
+         <div style="margin-left: 10%;">
         <el-row >
             <el-col :span="24" >{{project_name}} </el-col>
             <el-col :span="24" >{{project_date}} </el-col>
-            <el-col :span="12" >类型:{{project_type}}</el-col>
+            <el-col :span="24" >类型:{{project_type}}</el-col>
 
-            <el-col :span="24">
-                <el-button class='btn' style="margin-left: 0px;" type="primary" @click="toLoad">Load</el-button>
-                <el-button class='btn' style="margin-left: 20px; " type="danger" @click="toDelete">Delete</el-button>
-           
-            </el-col>
-       </el-row>
-        <hr style="margin-bottom: 0;">
+            <el-col :span="24" style="display: flex; align-items: center;">
+    <el-button class='btn' style="margin-right: 10px;" type="primary" @click="toLoad">Load</el-button>
+    <el-button class='btn' type="danger" @click="toDelete">Delete</el-button>
+</el-col>
+
+       </el-row></div>
+        <hr style="width: 100%; margin-bottom: 0;">
     </main>
 </template>
 
@@ -64,10 +64,10 @@ function toDelete(){
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color: black;
-   margin-left: 10%;
+   
 }
 .btn{
-    margin-top: 10px;
+    margin-top:4%;
     border-radius: 5px; 
     max-height: 60%;
     max-width: 80%;

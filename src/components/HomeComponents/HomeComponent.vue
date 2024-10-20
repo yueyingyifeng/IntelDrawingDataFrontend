@@ -94,7 +94,7 @@ function initChart() {
 
 .limit2 {
     width: 100%;
-    max-width: 700px; 
+    max-width:40%; 
     height: auto; 
 }
 
