@@ -9,21 +9,35 @@ import HomeComponent from '@/components/HomeComponents/HomeComponent.vue';
 import Home_CreateTableComponent from '@/components/HomeComponents/Home_CreateTableComponent.vue';
 import axios from 'axios';
 
-const currentFileID = ref();
-const currentData = ref([]);
-const currentType = ref('');
 const showData = ref(true);
 const chartList = ref([]);
-const toBeEdited = reactive({
-	fileID   : null,
-	fileName : null,
-	fileType : null,
-	data	 : []
+const status = reactive({
+	createPage	: "create",
+	loadPage	:"load",
+	previewPage	:"preview",
+	editPage	:"edit",
+	pushIfLastNotThis : (path)=>{
+		if(status.pathQueue[status.pathQueue.length-1] != path){
+			status.pathQueue = [...status.pathQueue, path]; 
+		}
+	},
+	lastPeek : ()=>{
+		return status.pathQueue[status.pathQueue.length-1]
+	},
+	cleanAndPush : (path)=>{
+		status.pathQueue = []
+		status.pathQueue = path
+	},
+	pathQueue 	: [],
+
+	fileID   	: -1,
+	fileName 	: "",
+	fileType 	: "bar",
+	data	 	: Array.from({ length: 3 }, () => Array(3).fill("0"))
 });
 
 provide('chartList',chartList)
-provide('toBeEdited',toBeEdited)
-
+provide('status',status)
 onMounted(() => {
 	if(store.getUserData().token == null || store.getUserData().token.length < 48){
         ElMessageBox.alert('', 'Please Login first');
@@ -35,22 +49,19 @@ onMounted(() => {
 });
 
 function saveChart(data,type){
-	currentData.value = data;
-	currentType.value = type;
+	status.data = data;
+	status.fileType = type;
 	showData.value = true;
 	// FIXME：如果没有延迟，将无法显示出新增项
 	setTimeout(GetChartList,100)
+	status.cleanAndPush([status.loadPage,status.previewPage])
 }
 
 
 function previewData(data, type) {
-	console.log("previewData")
-	currentData.value = [...data];
-	currentType.value = type;
-
-	toBeEdited.data = currentData.value;
-	toBeEdited.fileType = currentType.value;
-
+	status.data = data;
+	status.fileType = type;
+	status.pushIfLastNotThis(status.previewPage)
 	showData.value = true;
 }
 
@@ -86,15 +97,14 @@ function loadChart(fileID){
         }
 	}).then(res=>{
 		if(res.status == 200){
-			currentFileID.value = fileID
-			currentData.value = res.data.data
-			currentType.value = res.data.fileType
-			showData.value = true
 
-			toBeEdited.fileID = fileID
-			toBeEdited.fileName = chartList.value.find( item=> item.fileID == currentFileID.value)?.name
-			toBeEdited.fileType = currentType.value
-			toBeEdited.data = currentData.value
+			status.fileID = fileID
+			status.fileName = chartList.value.find( item=> item.fileID == fileID)?.name
+			status.fileType = res.data.fileType
+			status.data =  res.data.data
+			
+			status.cleanAndPush([status.loadPage, status.editPage, status.previewPage])
+			showData.value = true
 		}
 		else console.log(err)
 	}).catch(err=>{
@@ -105,17 +115,32 @@ function loadChart(fileID){
 }
 
 function toEdit(){
+	status.pushIfLastNotThis(status.editPage)
 	showData.value = false
 }
 
 function toCreateTable(){
+	status.cleanAndPush([status.createPage,status.editPage])
+	status.data = []
+	status.fileName = "",
+	status.fileType = "bar",
 	showData.value = false
 }
 
 function back(){
-	if(toBeEdited.isPreviewMode && toBeEdited.isEditMode && toBeEdited.isCreateMode){
+	if(status.pathQueue[0] == status.createPage && status.lastPeek() == status.previewPage){
 		showData.value = false
+		status.pathQueue.pop()
 	}
+	else
+		showData.value = true
+
+	if(status.pathQueue[0] == status.loadPage && status.lastPeek() == status.editPage){
+		status.pathQueue.push(status.previewPage)
+		showData.value = true
+	}
+	else 
+		showData.value = false
 }
 
 </script>
@@ -137,8 +162,8 @@ function back(){
 
 				<el-main>
 					<HomeComponent
-					 :data="currentData" 
-					 :type="currentType" 
+					 :data="status.data" 
+					 :type="status.fileType" 
 					 :show="showData" />
 
 					<Home_CreateTableComponent 

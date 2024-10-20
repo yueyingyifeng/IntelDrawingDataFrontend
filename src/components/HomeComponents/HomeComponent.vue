@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto'
 import { onMounted, defineProps, watch, inject } from 'vue';
 
 let chart;
-const toBeEdited = inject('toBeEdited');
+const status = inject('status');
 const props = defineProps({
     show: {
         type: Boolean,
@@ -16,6 +16,12 @@ const props = defineProps({
 onMounted(() => {
     initChart();
 })
+
+watch(status,
+    () => {
+        initChart();
+    }
+)
 
 
 function formatData(data) {
@@ -33,51 +39,49 @@ function initChart() {
         chart.destroy();
     }
 
-    if (toBeEdited.data.length < 1 || toBeEdited.fileType === '')
+    if (status.data.length < 1 || status.fileType === '')
         return;
 
     chart = new Chart(
         document.getElementById('ctx'),
         {
-            type: toBeEdited.fileType,
-            data: formatData(toBeEdited.data)
+            type: status.fileType,
+            data: formatData(status.data)
         }
     );
 }
-
-
 
 
 </script>
 
 <template>
     <div class="limit1">
-    <div class="limit2">
-    <main v-show="show" >
-       
-        <canvas style="width: auto;" class="ctx" id="ctx"></canvas>
-    </main>
-    </div>
+        <div class="limit2">
+            <main v-show="show">
+
+                <canvas style="width: auto;" class="ctx" id="ctx"></canvas>
+            </main>
+        </div>
     </div>
 </template>
 
 <style>
-.ctx{
+.ctx {
     width: auto;
     height: 1px;
 }
+
 .limit1 {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 }
 
 .limit2 {
     width: 100%;
-    max-width: 700px; 
-    height: auto; 
+    max-width: 700px;
+    height: auto;
 }
-
 </style>
 
 

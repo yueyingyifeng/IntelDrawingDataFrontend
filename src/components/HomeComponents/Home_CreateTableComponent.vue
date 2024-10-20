@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, defineEmits, defineProps, inject } from 'vue';
-import { ElMessage } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
 import axios from 'axios';
 import ArowConponent from '../CreateTableComponents/ArowConponent.vue';
 import { store, API } from '@/Util/Store.js'
@@ -20,7 +20,7 @@ const ChartTypes = [
 ]
 const selectedType = ref(ChartTypes[0].value)
 const emit = defineEmits(['saveFile', 'previewData']);
-const toBeEdited = inject("toBeEdited")
+const status = inject("status")
 
 const props = defineProps({
 	show: {
@@ -29,17 +29,26 @@ const props = defineProps({
 	}
 })
 
-watch(toBeEdited,
+watch(() => status.pathQueue,
 	(newVal, oldVal) => {
-		if (toBeEdited.isAChartLoaded) {
-			file_name.value = toBeEdited.fileName
-			selectedType.value = toBeEdited.fileType
-			tableData.value = toBeEdited.data
-		}
-		else {
+		if(newVal[0] == status.createPage && newVal[newVal.length - 1] == status.editPage){
+			console.log("new")
 			file_name.value = ""
 			selectedType.value = "bar"
 			tableData.value = Array.from({ length: 3 }, () => Array(3).fill(blank_character.value))
+		}
+		else if (newVal[1] == status.editPage && newVal[newVal.length - 1] != status.previewPage) {
+			console.log("edit")
+			status.fileName = file_name.value
+			status.fileType = selectedType.value
+			status.data = tableData.value
+
+		}
+		else if (newVal[0] == status.loadPage && newVal[newVal.length - 1] == status.editPage || newVal[newVal.length - 1] == status.previewPage) {
+			console.log("load")
+			file_name.value = status.fileName
+			selectedType.value = status.fileType
+			tableData.value = status.data
 		}
 	}
 );
@@ -105,9 +114,10 @@ function saveFile() {
 	}
 
 
-	tableData.value = fillArray(tableData.value, blank_character.value)
-
-	if (!(toBeEdited.isCreateMode && toBeEdited.isEditMode))
+	tableData.value = fillMissing(tableData.value, blank_character.value)
+	console.log("ready to save",tableData.value)
+	if (status.pathQueue[0] == status.loadPage && status.pathQueue[status.pathQueue.length - 1] == status.editPage) {
+		ElLoading.service({ fullscreen: true, text: 'Updating...' })
 		axios({
 			method: 'Patch',
 			url: API.UpDateChart,
@@ -115,7 +125,7 @@ function saveFile() {
 				'Authorization': `Bearer ${store.getUserData().token}`
 			},
 			data: {
-				"fileID": toBeEdited.fileID,
+				"fileID": status.fileID,
 				"fileName": file_name.value,
 				"fileType": selectedType.value,
 				"data": tableData.value
@@ -125,10 +135,15 @@ function saveFile() {
 				ElMessage.success("File update successfully")
 			else
 				console.log(res)
+			ElLoading.service().close()
+			emit('saveFile', tableData.value, selectedType.value);
 		}).catch(err => {
 			console.log(err)
 		})
-	else
+	}
+	else {
+		ElLoading.service({ fullscreen: true, text: 'Saving...' })
+
 		axios({
 			method: 'post',
 			url: API.CreateTable,
@@ -142,25 +157,37 @@ function saveFile() {
 		}).then(res => {
 			if (res.status === 201)
 				ElMessage.success("File save successfully")
-			else
+			else {
 				console.log(res)
+
+			}
+			ElLoading.service().close()
+			emit('saveFile', tableData.value, selectedType.value);
 		}).catch(err => {
 			console.log(err)
 		})
-
-	emit('saveFile', tableData.value, selectedType.value);
+	}
+	setTimeout(() => {
+		ElLoading.service().close()
+		emit('saveFile', tableData.value, selectedType.value);
+	}, 1000)
 	saveDialog.value = false;
 }
 
-function fillArray(arr, fillValue) {
+function fillMissing(arr, fillValue) {
+	// 将填充值转换为字符串类型
 	fillValue = String(fillValue);
+
 	// 找到二维数组中最长的数组长度
 	const maxLength = Math.max(...arr.map(subArray => subArray.length));
 
-	// 遍历每个子数组并用 fillValue 填充使其长度达到 maxLength
+	// 遍历每个子数组并填充和转换
 	return arr.map(subArray => {
-		// 如果子数组长度小于 maxLength，则用 fillValue 填充
-		return [...subArray, ...Array(maxLength - subArray.length).fill(fillValue)];
+		// 将子数组中的每个值都转换为字符串
+		const stringifiedArray = subArray.map(item => String(item));
+
+		// 如果子数组长度小于 maxLength，用 fillValue 补全
+		return [...stringifiedArray, ...Array(maxLength - subArray.length).fill(fillValue)];
 	});
 }
 </script>

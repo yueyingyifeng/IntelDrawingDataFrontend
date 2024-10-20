@@ -10,7 +10,7 @@ const deleteDialogVisible = ref(false)
 const chart_list = inject('chartList')
 const deleteDialog = ref(false)
 const readyToDeleteFileID = ref()
-const toBeEdited = inject("toBeEdited")
+const status = inject("status")
 
 function loadADataTable(project_id) {
     emit('load', project_id)
@@ -38,8 +38,6 @@ function deleteChartConfirm(){
         console.log(err)
     })
     deleteDialog.value = false
-    toBeEdited.isAChartLoaded = false;
-	toBeEdited.isEditMode = false
 }
 
 function deleteChart(project_id){
